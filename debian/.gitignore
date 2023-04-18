@@ -1,0 +1,10 @@
+*.substvars
+*debhelper*
+.debhelper
+autoreconf.*
+files
+tmp
+jsonnet
+libjsonnet0
+libjsonnet-dev
+python3-jsonnet

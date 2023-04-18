@@ -1,0 +1,5 @@
+jsonnet source: file-without-copyright-information
+jsonnet source: no-debian-changes
+jsonnet source: not-binnmuable-any-depends-any
+jsonnet source: source-is-missing
+jsonnet source: weak-library-dev-dependency

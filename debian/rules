@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+
+SHELL := /bin/bash
+
+export DEB_CFLAGS_MAINT_APPEND = -Ithird_party/md5 -Ithird_party/json -Ithird_party/rapidyaml/rapidyaml -Iinclude -fPIC
+export DEB_CXXFLAGS_MAINT_APPEND = -Ithird_party/md5 -Ithird_party/json -Ithird_party/rapidyaml/rapidyaml -Iinclude -fPIC
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_LD_FLAGS="-static" \
+		-DCMAKE_FIND_LIBRARY_SUFFIXES=".a" \
+		-DBUILD_SHARED_BINARIES=OFF \
+		-DBUILD_STATIC_LIBS=ON \
+		-DBUILD_TESTS=OFF
+
+override_dh_auto_build:
+	dh_auto_build
+	python3 setup.py build
+
+override_dh_auto_install:
+	dh_auto_install
+	python3 setup.py install \
+		--no-compile \
+		--install-layout=deb \
+		--root=./debian/tmp
+	find debian/tmp -type f -name '*.a' -exec rm -rf {} \;
+	find debian/tmp/usr/lib/python*/*-packages -type f -name '*.pyc' -exec rm -rf {} \;
+	fdupes -qnrps debian/tmp/usr/lib/python*/*-packages
+
+override_dh_auto_test:
+
+override_dh_auto_clean:
+
+%:
+	dh $@ --buildsystem=cmake --with python3

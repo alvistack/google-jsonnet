@@ -52,3 +52,6 @@ Testing/
 **/.DS_Store
 
 .vscode
+
+obj-x86_64-linux-gnu/
+.pybuild/
